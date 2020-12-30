@@ -10,7 +10,7 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 class Consume_Data():
 
     def __init__(self):
-        self.topic = 'nyctrip8'
+        self.topic = 'nycspeed12'
         self.df = pd.DataFrame()
 
     def ConsumeMessages(self):
