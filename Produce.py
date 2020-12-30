@@ -7,7 +7,13 @@ pd.options.display.width = 0
 class Produce_Data():
 
     def __init__(self):
-        self.p = Producer({'bootstrap.servers': 'localhost:9092'})
+        conf = {'bootstrap.servers': 'localhost:9092', 
+             'queue.buffering.max.messages': 1000000, 
+             'queue.buffering.max.ms' : 500,  ### <==== FIXME: this is fine for large files where the total send time will be above 500ms, but for small files it will add some delay - there is no harm in decreasing this value to something like 10 or 100 ms. On the other hand that may be offset by a lower batch.num.messages, but that is typically not the way to go. 
+             'batch.num.messages': 50,   ### <=== FIXME: Why this low value? You typically don't need to alter the batch size.
+             'default.topic.config': {'acks': 'all'}}
+
+        self.p = Producer(**conf)
         self.topic = 'nyctrip8'
         self.counter = 0
 
